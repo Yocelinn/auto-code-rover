@@ -102,6 +102,7 @@ def main():
     config.only_reproduce = args.reproduce
 
     subcommand = getattr(args, subparser_dest_attr_name)
+    print("subcommand is :" + subcommand + "\n")        # breakpoint
     if subcommand == "swe-bench":
         if args.result_analysis:
             # do analysis and exit

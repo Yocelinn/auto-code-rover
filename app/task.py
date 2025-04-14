@@ -525,3 +525,37 @@ class PlainTask(Task):
 
     def validate(self, patch_content: str) -> tuple[bool, str, str, str]:
         raise NotImplementedError("Cannot do validation for live issues for now")
+
+    def execute_reproducer(
+    self, test_content: str, patch_content: str | None = None
+    ) -> ReproResult:
+        cm = nullcontext() if patch_content is None else self.apply_patch(patch_content)
+
+        with cm:
+            with NamedTemporaryFile(
+                buffering=0, prefix="reproducer-", suffix=".py"
+            ) as f:
+                f.write(test_content.encode())
+                try:
+                    cp = run_script_in_conda(
+                        [f.name],
+                        "auto-code-rover",  # 如果你希望让 PlainTask 使用指定的 Conda 环境
+                        cwd=self.project_path,
+                        text=True,
+                        capture_output=True,
+                        timeout=120,
+                    )
+                    cp_stdout = cp.stdout
+                    cp_stderr = cp.stderr
+                    cp_returncode = cp.returncode
+                except subprocess.TimeoutExpired:
+                    cp_stdout = ""
+                    cp_stderr = "Test execution timeout."
+                    cp_returncode = -1
+
+        # 简单处理错误输出，防止过长
+        stderr_result = str(cp_stderr)
+        stderr_lines = stderr_result.splitlines()
+        if len(stderr_lines) > 100:
+            stderr_result = "\n".join(stderr_lines[:50] + ["..."] + stderr_lines[-50:])
+        return ReproResult(cp_stdout, stderr_result, cp_returncode)

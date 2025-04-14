@@ -60,6 +60,8 @@ def register_all_models() -> None:
     common.register_model(gptlitellm.Gpt35_Turbo16k_0613LiteLLM())
     common.register_model(gptlitellm.Gpt35_Turbo0613LiteLLM())
     common.register_model(gptlitellm.Gpt4_0613LiteLLM())
+    common.register_model(gptlitellm.DeepSeekV3_LiteLLM())      # add new deepseek api source
+    common.register_model(gptlitellm.DeepSeekR1_LiteLLM())
 
     common.register_model(azure.AzureGpt4())
     common.register_model(azure.AzureGpt4o())

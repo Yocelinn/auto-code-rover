@@ -9,7 +9,7 @@ output_dir: str = ""
 overall_retry_limit: int = 3
 
 # upper bound of the number of conversation rounds for the agent
-conv_round_limit: int = 15
+conv_round_limit: int = 7       # the origin one is 15, I change to 7
 
 # whether to perform sbfl
 enable_sbfl: bool = False

@@ -188,3 +188,25 @@ class Gpt4_0613LiteLLM(OpenaiLiteLLMModel):
     def __init__(self):
         super().__init__("litellm-gpt-4-0613", 0.00003, 0.00006)
         self.note = "Not turbo. Up to Sep 2021."
+
+
+class DeepSeekR1_LiteLLM(OpenaiLiteLLMModel):
+    def __init__(self):
+        super().__init__(
+            name="deepseek-reasoner",  # 模型名称
+            cost_per_input=0.000001,  # 输入成本（根据实际情况调整）
+            cost_per_output=0.000002,  # 输出成本（根据实际情况调整）
+            parallel_tool_call=True
+        )
+        self.note = "DeepSeek model R1, deepseek-reasoner"
+
+
+class DeepSeekV3_LiteLLM(OpenaiLiteLLMModel):
+    def __init__(self):
+        super().__init__(
+            name="deepseek-chat",  # 模型名称
+            cost_per_input=0.000001,  # 输入成本（根据实际情况调整）
+            cost_per_output=0.000002,  # 输出成本（根据实际情况调整）
+            parallel_tool_call=True
+        )
+        self.note = "DeepSeek model V3, deepseek-chat"
